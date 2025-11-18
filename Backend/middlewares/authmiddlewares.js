@@ -4,14 +4,16 @@ import EmployeeProfile from "../models/EmployeeProfile.js"; // adjust path
 
 export const protect = async (req, res, next) => {
   let token;
-
+ console.log(req.headers)
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     try {
       // Extract token
       token = req.headers.authorization.split(" ")[1];
+      
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log(decoded)
 
       // ✅ Find user ONLY in EmployeeProfile
       req.user = await EmployeeProfile.findById(decoded.id).select("-password");

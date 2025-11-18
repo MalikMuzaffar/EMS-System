@@ -1,29 +1,24 @@
 import Task from '../models/Task.js';
+import { CreatetaskService,
+  getAllTaskService,
+  getTaskByIdService
+ } from '../Services/taskServices.js';
 
 // Create a new task
 export const createTask = async (req, res) => {
   try {
     const { title, description, createdBy, priority, dueDate, assignTo } = req.body;
-
+   const userid = req.user._id;
     // Validate required fields
-    if (!title || !createdBy || !assignTo) {
-      return res.status(400).json({ message: 'Title, createdBy, and assignTo are required.' });
+    if (!title || !description || !assignTo) {
+      res.error("Title, createdBy, and assignTo are required",{},400)
     }
-
-    const newTask = new Task({
-      title,
-      description,
-      createdBy: req.user._id, // Use the authenticated user's ID 
-      priority,
-      dueDate,
-      assignTo,
-    });
-
-    await newTask.save();
-    res.status(201).json({ message: 'Task created successfully', task: newTask });
+    
+    const newTask = await CreatetaskService({userid,title, description, priority, dueDate, assignTo})
+    res.success("Task created successfully",{newTask},201)
   } catch (error) {
     console.error('Error creating task:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.error("Server error",{error: error.message},500)
   }
 };
 
@@ -33,18 +28,10 @@ export const createTask = async (req, res) => {
 //  Get all tasks
 export const getAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.find()
-      .populate('createdBy', 'firstName lastName email')   // get creator details
-      .populate('assignTo', 'firstName lastName email'); // get assigned employee details
-
-    res.status(200).json({
-      success: true,
-      count: tasks.length,
-      tasks
-    });
+     const tasks = await getAllTaskService()
+     res.success("get Task",{tasks,count: tasks.length},200)
   } catch (error) {
-    console.error("Error fetching tasks:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res.error("Error fetching tasks",{error: error.message},500)
   }
 };
 
@@ -54,19 +41,15 @@ export const getAllTasks = async (req, res) => {
 export const getTaskById = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const task = await Task.find({assignTo:id})
-      .populate('createdBy', 'firstName lastName email')   // show user details
-      .populate('assignTo', 'firstName lastName email');   // show employee details
-
+  const task = await getTaskByIdService(id);
     if (!task) {
-      return res.status(404).json({ success: false, message: "Task not found" });
+
+      throw new Error("Task not found")
     }
 
-    res.status(200).json({ success: true, task });
+    res.success("",{task},200)
   } catch (error) {
-    console.error("Error fetching task:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res.error("Error fetching task",{error: error.message},500)
   }
 };
     

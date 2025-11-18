@@ -12,6 +12,7 @@ import achievementRoutes from "./routes/achievementRoutes.js";
 import documentRoutes   from  "./routes/documentRoutes.js";
 import cors from "cors";
 import { markAbsentsJob } from "./utils/attendanceCron.js";
+import { ApiResponsemiddleware } from './middlewares/apiResponsemiddlewares.js';
 
 
 
@@ -30,6 +31,9 @@ connectDB();
 
 //  Middleware to parse JSON 
 app.use(express.json());
+//  Middleware for api response
+app.use(ApiResponsemiddleware)
+
 
 // Routes
 app.use("/api/users", userRoutes);          // User Routes
