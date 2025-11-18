@@ -32,7 +32,7 @@ connectDB();
 //  Middleware to parse JSON 
 app.use(express.json());
 //  Middleware for api response
-app.use(ApiResponsemiddleware)
+
 
 
 // Routes
@@ -44,7 +44,7 @@ app.use("/api/leaves", leaveRoutes);      // Leave Routes
 app.use("/api/achievements", achievementRoutes); //achievements
 app.use("/uploads", express.static("uploads"));   // Serve uploaded files statically (optional)
 app.use("/api/documents", documentRoutes);    // documents routes
-
+app.use(ApiResponsemiddleware)
 markAbsentsJob();
 
 

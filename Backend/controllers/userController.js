@@ -18,7 +18,7 @@ import {
 
 
 // User Signup
-export const registerUser = async (req, res) => {
+export const registerUser = async (req, res,next) => {
   try {
     const {
       firstName,
