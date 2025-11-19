@@ -50,7 +50,9 @@ jobs:
 
           # Copy docker-compose.yml to EC2
           scp -o StrictHostKeyChecking=no -i key.pem docker-compose/docker-compose.yml ubuntu@18.218.243.84:/home/ubuntu/my-project/docker-compose.yml
-
+          # Create .env file with MONGO_URI (secure)
+          echo 'MONGO_URI=${{ secrets.MONGO_URI }}' > .env
+          chmod 600 .env  # secure permission
           # SSH and deploy
           ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@18.218.243.84 "
             cd /home/ubuntu/my-project &&
