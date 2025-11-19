@@ -16,7 +16,7 @@ services:
 
    # build:
     #  context: ./Backend
-   # ports:
+    ports:
       - "3000:3000"
     environment:
       - MONGO_URI=${MONGO_URI}
