@@ -56,8 +56,8 @@ jobs:
             cd /home/ubuntu/my-project
 
             # Write variables into .env
-            echo \"MONGO_URI=$MONGO_URI_VALUE\" > .env
-            echo \"VITE_API_URL=http://$EC2_HOST_VALUE:3000\" >> .env
+            echo MONGO_URI=$MONGO_URI_VALUE > .env
+            echo VITE_API_URL=http://$EC2_HOST_VALUE:3000 >> .env
             chmod 600 .env
 
             echo "Pulling latest Docker images..."
