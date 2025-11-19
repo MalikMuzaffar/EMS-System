@@ -1,23 +1,25 @@
+version: '3.9'
+
 services:
-  front-end:
+  frontend:
     image: muzaffaribrar/ems-system:frontend
     ports:
       - "5173:80"
     depends_on:
       - backend
-    restart: always
+    environment:
+      - VITE_API_URL=${VITE_API_URL}  # Inject frontend API URL
+    restart: unless-stopped
 
   backend:
     image: muzaffaribrar/ems-system:backend
     ports:
       - "3000:3000"
-    environment:
-      - MONGO_URI=${MONGO_URI}
-    # CRITICAL FIX: Override the faulty command in the remote image
-    command: ["node", "server.js"] 
     depends_on:
       - mongo
-    restart: always
+    env_file:
+      - .env  # MONGO_URI will be read from the single .env file
+    restart: unless-stopped
 
   mongo:
     image: mongo:7.0
@@ -25,7 +27,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-    restart: always
+    restart: unless-stopped
 
 volumes:
   mongo-data:

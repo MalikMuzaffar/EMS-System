@@ -39,29 +39,34 @@ jobs:
 
       # 6️⃣ Deploy on EC2
       - name: Deploy to EC2
+        env:
+          MONGO_URI_VALUE: ${{ secrets.MONGO_URI }}
+          VITE_API_URL_VALUE: "http://${{ secrets.EC2_HOST }}:3000"  # Backend URL for frontend
         run: |
           # Save PEM key
           echo "${{ secrets.EC2_PEM }}" > key.pem
           chmod 600 key.pem
 
           # Copy docker-compose.yml to EC2
-          scp -o StrictHostKeyChecking=no -i key.pem docker-compose/docker-compose.yml ubuntu@18.218.243.84:/home/ubuntu/my-project/docker-compose.yml
+          scp -o StrictHostKeyChecking=no -i key.pem docker-compose/docker-compose.yml ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/my-project/docker-compose.yml
 
-          # Store Mongo URI secret in a variable BEFORE SSH
-          MONGO_URI_VALUE="${{ secrets.MONGO_URI }}"
-
-          # SSH into EC2 and deploy
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@18.218.243.84 << EOF
+          # SSH into EC2 and create single .env
+          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.EC2_HOST }} << EOF
             cd /home/ubuntu/my-project
 
-            # Create/Update .env file inside EC2
-            echo "MONGO_URI=$MONGO_URI_VALUE" > .env
+            echo "🔐 Creating single .env file for frontend + backend..."
+
+            cat > .env << EOL
+MONGO_URI=$MONGO_URI_VALUE
+VITE_API_URL=$VITE_API_URL_VALUE
+EOL
+
             chmod 600 .env
 
-            echo "Pulling latest Docker images..."
+            echo "📥 Pulling latest Docker images..."
             docker pull muzaffaribrar/ems-system:frontend
             docker pull muzaffaribrar/ems-system:backend
 
-            echo "Starting containers..."
+            echo "🚀 Starting containers..."
             docker-compose up -d --remove-orphans --force-recreate
           EOF
