@@ -64,4 +64,4 @@ jobs:
 
             echo "Starting services using docker-compose..."
             docker-compose up -d --remove-orphans
-EOF
+          EOF
