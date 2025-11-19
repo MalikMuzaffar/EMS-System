@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "../../util/axiosInstance";
 import { UserInfoContext } from "../../context/contextApi";
 import { AlertCircle, Loader2, Trophy, Download } from "lucide-react";
-import Layout from "../../components/Layout";
+import Layout from "../../components/layout.jsx";
 
 const Achievements = () => {
   const { user } = useContext(UserInfoContext);

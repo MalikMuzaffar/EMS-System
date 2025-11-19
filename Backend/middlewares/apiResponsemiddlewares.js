@@ -1,5 +1,5 @@
- export const ApiResponsemiddleware  = (req,res,next) =>{
-    res.success = (message = "Success", data = {}, statusCode = 200) => {
+export const ApiResponsemiddleware = (req, res, next) => {
+  res.success = (message = "Success", data = {}, statusCode = 200) => {
     return res.status(statusCode).json({
       success: true,
       message,
@@ -16,6 +16,7 @@
       error,
     });
   };
-   next();
 
-}
+  next();
+};
+

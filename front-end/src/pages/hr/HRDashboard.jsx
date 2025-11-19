@@ -1,5 +1,5 @@
 import HRDashboard from "../../components/hr/HRDashboard";
-import Layout from "../../components/Layout";
+import Layout from "../../components/layout.jsx";
 
 const HrDashboard = () => {
   <Layout>

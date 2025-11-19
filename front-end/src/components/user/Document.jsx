@@ -138,7 +138,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../util/axiosInstance";
 import toast from "react-hot-toast";
-import Layout from "../../components/Layout";
+import Layout from "../../components/layout.jsx";
 import { FileText, Trash2, Download } from "lucide-react";
 
 const Documents = () => {

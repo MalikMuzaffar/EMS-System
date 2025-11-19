@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../../components/Layout";
+import Layout from "../../components/layout.jsx";
 import Document from "../../components/user/Document";
 
 export default function DocumentPage() {

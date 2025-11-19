@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const attendanceSchema = new mongoose.Schema({
   employeeId: {
@@ -20,8 +20,7 @@ const attendanceSchema = new mongoose.Schema({
 // Ensure unique attendance per employee per day
 attendanceSchema.index({ employeeId: 1, date: 1 }, { unique: true });
 
-
-
+// Pre-save hook
 attendanceSchema.pre("save", function (next) {
   if (this.checkIn) {
     if (this.checkOut) {
@@ -35,27 +34,30 @@ attendanceSchema.pre("save", function (next) {
     }
 
     // Status Rules
-   const checkInDate = new Date(this.checkIn);
-const localHour = checkInDate.getHours(); 
-const time = localHour+12 ;// This should now give you the correct local hour
-console.log("Check-in hour (local):", time);
+    const checkInDate = new Date(this.checkIn);
+    const localHour = checkInDate.getHours();
+    const time = localHour + 12; // Adjust if needed for timezone
+    console.log("Check-in hour (local):", time);
 
-if (this.checkIn) {
-  if (this.hoursWorked < 6 && this.checkOut) {
-    this.status = "half-day";
-  } else if (time >= 10) {
-    // Only apply half-day if checkout exists
-    this.status = "late";
-  } else {
-    this.status = "present"; // full day present
-  }
-} else {
-  this.hoursWorked = 0;
-  this.status = "absent"; // no check-in
-}
+    if (this.checkIn) {
+      if (this.hoursWorked < 6 && this.checkOut) {
+        this.status = "half-day";
+      } else if (time >= 10) {
+        // Only apply late if checkout exists
+        this.status = "late";
+      } else {
+        this.status = "present"; // full day present
+      }
+    } else {
+      this.hoursWorked = 0;
+      this.status = "absent"; // no check-in
+    }
   }
 
   next();
 });
 
- module.exports = mongoose.model("Attendance", attendanceSchema);
+const Attendance = mongoose.model("Attendance", attendanceSchema);
+
+export default Attendance; // ✅ ES Module export
+

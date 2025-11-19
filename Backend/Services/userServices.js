@@ -12,6 +12,7 @@ import {
 } from '../repositories/userRepositories.js';
   // LoginUserService starts here
    export const LoginUserService = async (email, password) => {
+    //console.log(email);
    try {
     const user = await findUserByEmail(email);  
     if (!user) {

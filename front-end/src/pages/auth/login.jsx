@@ -1,43 +1,49 @@
 import React, { useContext, useState } from "react";
-import axios from "../../util/axiosInstance"
+import axios from "../../util/axiosInstance";
 import { UserInfoContext } from "../../context/contextApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const {setUser,setAccessToken} = useContext(UserInfoContext)
+  const { setUser, setAccessToken } = useContext(UserInfoContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-const handleSubmit = async(e) => {
-  e.preventDefault();
-  try {
-    const { data } = await axios.post("/api/users/login", { email, password });
-   
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    setUser(data.data.user); // 👈 user save in context
-    setAccessToken(data.data.token); 
-    // localStorage.setItem("token", data.data.token);// 👈 token save in context
-    toast.success("Login successfully...");
-    
+    if (!email || !password) {
+      toast.error("Please provide both email and password");
+      return;
+    }
 
-    // 👇 role-based navigation
-   if (data.data.user.role === "HR") {
-  navigate("/hr/HRdashboard"); // 👈 same as App.jsx route
-} else {
-  navigate("/employee/dashboard");
-}
+    try {
+      const { data } = await axios.post("/api/users/login", { email, password });
 
+      setUser(data.data.user);
+      setAccessToken(data.data.token);
 
-  } catch (error) {
-    toast.error(error?.response?.data?.message || error.message);
-  }
-};
+      toast.success("Login successful!");
 
+      if (data.data.user.role === "HR") {
+        navigate("/hr/HRdashboard");
+      } else {
+        navigate("/employee/dashboard");
+      }
+    } catch (error) {
+      // ✅ Handle only 400 Bad Request specifically
+      if (error?.response?.status === 400) {
+        toast.error(error.response.data.message || "Invalid credentials.");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+      console.error("Login error:", error);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 ">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
         {/* Icon */}
         <div className="flex justify-center mb-4">
@@ -58,7 +64,6 @@ const handleSubmit = async(e) => {
           </div>
         </div>
 
-        {/* Title */}
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Employee Management
         </h2>
@@ -66,12 +71,9 @@ const handleSubmit = async(e) => {
           Sign in to your account
         </p>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-600 text-sm mb-1">
-              Email Address
-            </label>
+            <label className="block text-gray-600 text-sm mb-1">Email Address</label>
             <input
               type="email"
               value={email}
@@ -94,18 +96,16 @@ const handleSubmit = async(e) => {
             />
           </div>
 
-          {/* Remember / Forgot */}
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center gap-2 text-gray-600">
               <input type="checkbox" className="rounded" />
               Remember me
             </label>
-            {/* <a href="/forgot-password" className="text-blue-600 hover:underline">
-              Forgot password?
-            </a> */}
+            <a href="/forget-password" className="text-red-600 hover:underline text-sm">
+              Forgot Password?
+            </a>
           </div>
 
-          {/* Button */}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
@@ -114,25 +114,12 @@ const handleSubmit = async(e) => {
           </button>
         </form>
 
-        {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-600">
           New employee?{" "}
           <a href="/signup" className="text-blue-600 hover:underline">
             Create Account
           </a>
         </p>
-        <p className="mt-6 text-center text-sm text-gray-600">
-
-          <a href="/forget-password" className="text-red-600  text-md hover:underline">
-            Forget Password
-          </a>
-        </p>
-
-        {/* <p className="mt-4 text-center text-xs text-gray-400">
-          Credentials: DevRolin company <a href="/signup" className="text-blue-600 hover:underline">
-            Terms & Conditions
-          </a>
-        </p> */}
       </div>
     </div>
   );

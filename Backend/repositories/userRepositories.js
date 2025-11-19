@@ -1,39 +1,27 @@
-
-import EmployeeProfile from '../models/EmployeeProfile.js';
 import User from '../models/User.js';
-// find user by email start
- export  const findUserByEmail = async (email) => { 
-    const user = await EmployeeProfile.findOne({ email: email });
-    return user;
-}
-   
-    // find user by email end
+import EmployeeProfile from '../models/EmployeeProfile.js';
 
-    // find get All user  start
-  export   const findAllUser = async (email) => { 
-    const allUser = await User.find().select("-password");
-    return allUser;
-}
-    
-    // find get All user  end
-    
-    // find User id and email function is start
-   export const FindUserIdandEmail  = async(userid) =>{
-       const user = await User.findById(userid);
-       return user;
+// find user by email
+export const findUserByEmail = async (email) => { 
+  console.log("Email received:", email);
+  const user = await User.findOne({ email }).select("+password");
+  return user;
+};
 
-    }
-   // find User id and email function is end
+// find all users
+export const findAllUser = async () => { 
+  return await User.find().select("-password");
+};
 
+// find user by ID
+export const FindUserIdandEmail = async (userid) => {
+  const user = await User.findById(userid);
+  return user;
+};
 
-   
-    // find Employee by id  start
-   export const FindEmployeeId  = async(Empid) =>{
-       const Emp = await EmployeeProfile.findById(Empid);
-       return Emp;
+// find employee by ID
+export const FindEmployeeId = async (Empid) => {
+  const Emp = await EmployeeProfile.findById(Empid);
+  return Emp;
+};
 
-    }
-   // find Employee by  end
- 
-   
- 

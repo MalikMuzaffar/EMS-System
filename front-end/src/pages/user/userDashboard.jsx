@@ -1,6 +1,6 @@
 import React from "react";
-import Layout from "../../components/Layout";
-import Dashboard from "../../components/user/dashboard";
+import Layout from "../../components/layout.jsx";
+import Dashboard from "../../components/user/Dashboard.jsx";
 
 function UserDashboard() {
   return (
