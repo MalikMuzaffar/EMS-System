@@ -45,13 +45,13 @@ jobs:
           chmod 600 key.pem
 
           # Copy docker-compose.yml TO EC2
-          scp -o StrictHostKeyChecking=no -i key.pem docker-compose/docker-compose.yml ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/my-project/docker-compose.yml
+          scp -o StrictHostKeyChecking=no -i key.pem docker-compose/docker-compose.yml ubuntu@18.218.243.84:/home/ubuntu/my-project/docker-compose.yml
 
           # Pass secret into a variable BEFORE SSH
           MONGO_URI_VALUE="${{ secrets.MONGO_URI }}"
 
           # SSH into EC2 and deploy
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.EC2_HOST }} << EOF
+          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@18.218.243.84 << EOF
             cd /home/ubuntu/my-project
 
             echo "Updating .env file..."
