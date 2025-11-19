@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPython = axios.create({
-  baseURL: "http://localhost:8000", // Python FastAPI backend
+  baseURL: import.meta.env.VITE_PYTHON_API_URL, // Python FastAPI backend
   timeout: 30000,
   headers: {
     "Content-Type": "application/json",
