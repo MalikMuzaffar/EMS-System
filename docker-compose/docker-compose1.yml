@@ -1,23 +1,27 @@
+version: '3.9'
+
 services:
   front-end:
     image: muzaffaribrar/ems-system:frontend
+
+#    build:
+ #     context: ./front-end
     ports:
       - "5173:80"
     depends_on:
       - backend
-    restart: always
 
   backend:
     image: muzaffaribrar/ems-system:backend
+
+   # build:
+    #  context: ./Backend
     ports:
       - "3000:3000"
     environment:
       - MONGO_URI=${MONGO_URI}
-    # CRITICAL FIX: Override the faulty command in the remote image
-    command: ["node", "server.js"] 
     depends_on:
       - mongo
-    restart: always
 
   mongo:
     image: mongo:7.0
@@ -25,7 +29,6 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-    restart: always
 
 volumes:
   mongo-data:
