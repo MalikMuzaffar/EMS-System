@@ -49,7 +49,7 @@ jobs:
           chmod 600 key.pem
 
           # SSH and deploy
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.EC2_IP }} "
+          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@18.218.243.84 "
             cd /home/ubuntu/my-project &&
             docker pull muzaffaribrar/ems-system:frontend &&
             docker pull muzaffaribrar/ems-system:backend &&
