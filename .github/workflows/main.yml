@@ -30,8 +30,8 @@ jobs:
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          docker-compose build
-          docker-compose push
+          docker compose build
+          docker compose push
 
       # Setup SSH key
       - name: Setup SSH key
@@ -45,4 +45,4 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
           ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@18.218.243.84 \
-          "export MONGO_URI=${MONGO_URI} && cd /home/ubuntu/my-project && docker-compose pull && docker-compose up -d"
+          "export MONGO_URI=${MONGO_URI} && cd /home/ubuntu/my-project && docker compose pull && docker compose up -d"
