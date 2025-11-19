@@ -36,7 +36,7 @@ jobs:
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          docker build -t muzaffaribrar/ems-system:backend ./back-end
+          docker build -t muzaffaribrar/ems-system:backend ./Backend
           docker push muzaffaribrar/ems-system:backend
 
       # 6️⃣ Deploy to EC2
