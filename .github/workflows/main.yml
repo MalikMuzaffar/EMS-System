@@ -48,6 +48,9 @@ jobs:
           echo "${{ secrets.EC2_PEM }}" > key.pem
           chmod 600 key.pem
 
+          # Copy docker-compose.yml to EC2
+          scp -o StrictHostKeyChecking=no -i key.pem docker-compose/docker-compose.yml ubuntu@18.218.243.84:/home/ubuntu/my-project/docker-compose.yml
+
           # SSH and deploy
           ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@18.218.243.84 "
             cd /home/ubuntu/my-project &&
