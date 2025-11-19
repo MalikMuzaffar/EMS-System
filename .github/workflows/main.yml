@@ -47,6 +47,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@18.218.243.84 "
             export MONGO_URI=${MONGO_URI} &&
             cd /home/ubuntu/my-project &&
+            git reset --hard &&
             git pull origin main &&
             docker-compose pull &&
             docker-compose up -d --remove-orphans
