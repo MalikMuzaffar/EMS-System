@@ -415,7 +415,7 @@ const handleSubmit = async (e) => {
 
 // status 201 aya to successful hoga
 if (data && data.user) {
-  toast.error(data.message || "User registered successfully", { duration: 4000, position: "top-right" });
+  toast.success(data.message || "User registered successfully", { duration: 4000, position: "top-right" });
   setFormData(initialForm);
 } else {
   toast.error(data.message || "Signup failed", { duration: 5000, position: "top-right" });
