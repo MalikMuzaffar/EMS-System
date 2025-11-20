@@ -28,7 +28,7 @@ jobs:
       # 3️⃣ Set frontend environment
       - name: Set Frontend .env
         run: |
-          echo "VITE_API_URL=http://${{ secrets.EC2_HOST }}:3000" > ./front-end/.env
+          echo "VITE_API_URL= ${{ secrets.EC2_HOST }}" > ./front-end/.env
 
       # 4️⃣ Build + Push Frontend Image
       - name: Build and push Frontend Docker image
