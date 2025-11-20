@@ -1,6 +1,19 @@
 // src/api/axiosConfig.js
 import axios from "axios";
 
+
+
+///////////////////////
+
+// import axios from "axios";
+
+// const instance = axios.create({
+//   baseURL: import.meta.env.VITE_API_URL,
+// });
+
+// export default instance;
+
+
 // Create an Axios instance using VITE_API_URL from environment
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000", // fallback for local dev

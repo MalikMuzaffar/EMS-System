@@ -19,8 +19,13 @@ import { ApiResponsemiddleware } from "./middlewares/apiResponsemiddlewares.js";
 const app = express();
 
 // CORS
-app.use(cors({ origin: "*" }));
+// app.use(cors({ origin: "*" }));
+// import cors from "cors";
 
+app.use(cors({
+  origin: ["http://18.218.243.84:5173"], // frontend URL
+  credentials: true,
+}));
 // Connect MongoDB
 connectDB();
 
