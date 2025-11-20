@@ -41,8 +41,14 @@ jobs:
       - name: Deploy to EC2
         env: 
           # Store Mongo URI and EC2 HOST VALUE secret in a variable BEFORE SSH
+
           MONGO_URI_VALUE: ${{ secrets.MONGO_URI }}
           EC2_HOST_VALUE: ${{ secrets.EC2_HOST }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          JWT_EXPIRES_IN: ${{ secrets.JWT_EXPIRES_IN }}
+          PORT: ${{ secrets.PORT }}
         run: |
           # Save PEM key
           echo "${{ secrets.EC2_PEM }}" > key.pem
@@ -59,6 +65,11 @@ jobs:
             echo MONGO_URI=$MONGO_URI_VALUE > .env
             echo VITE_API_URL=http://$EC2_HOST_VALUE:3000 >> .env
             echo "VITE_PYTHON_API_URL=http://$EC2_HOST_VALUE:8000" >> .env
+            echo "JWT_SECRET=$JWT_SECRET" >> .env
+            echo "EMAIL_USER=$EMAIL_USER" >> .env
+            echo "EMAIL_PASS=$EMAIL_PASS" >> .env
+            echo "JWT_EXPIRES_IN=$JWT_EXPIRES_IN" >> .env
+            echo "PORT=$PORT" >> .env
             chmod 600 .env
 
             echo "Pulling latest Docker images..."
