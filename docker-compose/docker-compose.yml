@@ -20,7 +20,7 @@ services:
     env_file:
       - .env  # MONGO_URI will be read from the single .env file
     # CRITICAL FIX: Override the faulty command in the remote image
-    command: ["node", "server.js"] 
+    #command: ["node", "server.js"] 
     restart: unless-stopped
 
   mongo:
